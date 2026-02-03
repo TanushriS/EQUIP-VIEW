@@ -1,41 +1,84 @@
-import { useState, useCallback, useRef } from 'react';
-import { useApp } from '@/context/AppContext';
-import { Button } from '@/components/ui/button';
-import { downloadSampleCSV, sampleEquipmentData } from '@/lib/sampleData';
-import { motion } from 'framer-motion';
-import { Upload, FileSpreadsheet, Download, CheckCircle, AlertCircle } from 'lucide-react';
-import { toast } from 'sonner';
-import { api } from '@/utils/api';
+import Papa from 'papaparse';
+import { v4 as uuidv4 } from 'uuid';
+
+// ... (other imports)
 
 export function CSVUpload() {
   const { t, addDataset } = useApp();
-  const [isDragging, setIsDragging] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [uploadStatus, setUploadStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  // ... (state)
 
   const handleUpload = useCallback(async (file: File) => {
     setIsProcessing(true);
     setUploadStatus('idle');
 
-    try {
-      const response = await api.uploadDataset(file);
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      dynamicTyping: true,
+      complete: (results) => {
+        try {
+            if (results.errors.length > 0) {
+                throw new Error(results.errors[0].message);
+            }
 
-      // Update global state with the returned data
-      // API returns { id, stats, data, ... }
-      if (response && response.data) {
-        addDataset(response);
+            const rawData = results.data as any[];
+            
+            // Validate and map data
+            const equipmentData = rawData.map((row, index) => {
+                if (!row['Equipment Name'] || !row['Type']) {
+                    throw new Error(`Row ${index + 1}: Missing required fields`);
+                }
+                return {
+                    id: uuidv4(),
+                    equipmentName: row['Equipment Name'],
+                    type: row['Type'],
+                    flowrate: Number(row['Flowrate'] || 0),
+                    pressure: Number(row['Pressure'] || 0),
+                    temperature: Number(row['Temperature'] || 0)
+                };
+            });
+
+            // Calculate stats
+            const totalCount = equipmentData.length;
+            const avgFlowrate = equipmentData.reduce((acc, curr) => acc + curr.flowrate, 0) / totalCount;
+            const avgPressure = equipmentData.reduce((acc, curr) => acc + curr.pressure, 0) / totalCount;
+            const avgTemperature = equipmentData.reduce((acc, curr) => acc + curr.temperature, 0) / totalCount;
+            
+            const typeDistribution = equipmentData.reduce((acc, curr) => {
+                acc[curr.type] = (acc[curr.type] || 0) + 1;
+                return acc;
+            }, {} as Record<string, number>);
+
+            const dataset = {
+                id: uuidv4(),
+                uploadedAt: new Date(),
+                fileName: file.name,
+                totalCount,
+                avgFlowrate,
+                avgPressure,
+                avgTemperature,
+                typeDistribution,
+                data: equipmentData
+            };
+
+            addDataset(dataset);
+            setUploadStatus('success');
+            toast.success(t('upload.success'));
+        } catch (error: any) {
+            console.error('Error parsing CSV:', error);
+            setUploadStatus('error');
+            toast.error(error.message || 'Error parsing CSV file');
+        } finally {
+            setIsProcessing(false);
+        }
+      },
+      error: (error) => {
+        console.error('Error reading CSV:', error);
+        setUploadStatus('error');
+        toast.error('Error reading CSV file');
+        setIsProcessing(false);
       }
-
-      setUploadStatus('success');
-      toast.success(t('upload.success'));
-    } catch (error) {
-      console.error('Error uploading CSV:', error);
-      setUploadStatus('error');
-      toast.error(error instanceof Error ? error.message : 'Error uploading CSV file');
-    } finally {
-      setIsProcessing(false);
-    }
+    });
   }, [addDataset, t]);
 
   const handleDrop = useCallback(
