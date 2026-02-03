@@ -1,73 +1,126 @@
-# Welcome to your Lovable project
+<div align="center">
+  <img src="public/icon.png" alt="Equip View Logo" width="100" />
+  <h1>Equip View</h1>
+  
+  <p>
+    <strong>A Modern Chemical Visualization & Equipment Dashboard</strong>
+  </p>
 
-## Project info
+  <p>
+    <a href="https://chemview.web.app">View Live Demo</a>
+    ·
+    <a href="https://github.com/TanushriS/EQUIP-VIEW/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/TanushriS/EQUIP-VIEW/issues">Request Feature</a>
+  </p>
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+  <p>
+    <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+    <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+    <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase" />
+    <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+    <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+  </p>
+</div>
 
-## How can I edit this code?
+<br />
 
-There are several ways of editing your application.
+## 📋 About The Project
 
-**Use Lovable**
+**Equip View** (deployed as *ChemView*) is a state-of-the-art dashboard application designed for tracking and visualizing chemical equipment data. Built with performance and user experience in mind, it leverages the latest web technologies to provide a seamless, secure, and responsive environment.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+### ✨ Key Features
 
-Changes made via Lovable will be committed automatically to this repo.
+- **📍 Robust Location Services**: Automatically detects user location using the browser's Geolocation API with high accuracy, featuring a smart fallback to IP-based detection using `ipapi.co` and reverse geocoding via OpenStreetMap.
+- **🔐 Secure Authentication**: Enterprise-grade security powered by Firebase Auth. Supports both classic Email/Password login and seamless **Google Sign-In**.
+- **🎨 Modern Aesthetic**: A clean, "glassmorphic" UI built with **Shadcn/UI** and **Tailwind CSS** that looks stunning on any device.
+- **📱 Fully Responsive**: Optimized for desktop, tablet, and mobile screens with smooth transitions and intuitive navigation.
+- **⚡ Lightning Fast**: Powered by **Vite** for instant load times and hot module replacement.
 
-**Use your preferred IDE**
+---
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🚀 Live Demo
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Check out the live application running on Firebase Hosting:
+<br />
+👉 **[https://chemview.web.app](https://chemview.web.app)**
 
-Follow these steps:
+---
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 🛠️ Tech Stack
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- **Frontend**: React 18, TypeScript, Vite
+- **Styling**: Tailwind CSS, Shadcn/UI, Lucide React (Icons)
+- **Backend / Services**: Firebase (Authentication, Hosting)
+- **State Management**: React Context API
+- **Routing**: React Router DOM
 
-# Step 3: Install the necessary dependencies.
-npm i
+---
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## 💻 Getting Started
 
-**Edit a file directly in GitHub**
+Follow these steps to set up the project locally.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Prerequisites
 
-**Use GitHub Codespaces**
+- Node.js (v18 or higher)
+- npm or yarn
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Installation
 
-## What technologies are used for this project?
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/TanushriS/EQUIP-VIEW.git
+    cd EQUIP-VIEW
+    ```
 
-This project is built with:
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+3.  **Configure Environment Variables**
+    - Rename `.env.example` to `.env`
+    - Add your Firebase configuration keys:
+    ```env
+    VITE_FIREBASE_API_KEY=your_key
+    VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+    ...
+    ```
 
-## How can I deploy this project?
+4.  **Run the development server**
+    ```bash
+    npm run dev
+    ```
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+5.  **Build for production**
+    ```bash
+    npm run build
+    ```
 
-## Can I connect a custom domain to my Lovable project?
+---
 
-Yes, you can!
+## 🛡️ Security
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+This project follows best, modern security practices:
+- **API Keys**: Stored in environment variables (`.env`), not in the codebase.
+- **Protected Routes**: Authentication context ensures sensitive pages are only accessible to logged-in users.
+- **Type Safety**: Full TypeScript implementation to prevent runtime errors.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+---
+
+## 🤝 Contributing
+
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+<div align="center">
+  <p>Made with ❤️ by Tanushri</p>
+</div>
